@@ -1,21 +1,29 @@
-<mat-menu #childMenu="matMenu" [class]="class" [overlapTrigger]="false" [hasBackdrop]="false">
-  <ng-container *ngFor="let child of items">
-    <!-- Handle branch node menu items -->
-    <span *ngIf="isGroup(child) && child.isVisible">
-      <button mat-menu-item color="primary" [matMenuTriggerFor]="menu.childMenu" [disabled]="child.disabled">
-        <mat-icon *ngIf="child.svgIcon != null" [svgIcon]="child.svgIcon"></mat-icon>
-        <mat-icon *ngIf="child.svgIcon == null && child.icon != null">{{ child.icon }}</mat-icon>
-        <span>{{ child.label | oTranslate}}</span>
-      </button>
-      <o-wrapper-content-menu #menu [items]="getChildren(child)" [class]="class"></o-wrapper-content-menu>
-    </span>
-    <!-- Handle leaf node menu items -->
-    <button mat-menu-item (click)="onClick(child, $event)" [disabled]="child.disabled" *ngIf="isItem(child) && child.isVisible">
-      <mat-icon *ngIf="child.svgIcon != null" [svgIcon]="child.svgIcon"></mat-icon>
-      <mat-icon *ngIf="child.svgIcon == null && child.icon != null">{{ child.icon }}</mat-icon>
-      <span>{{ child.label | oTranslate}} </span>
-    </button>
-    <!-- separator leaf node menu items -->
-    <mat-divider *ngIf="isSeparator(child) && child.isVisible"></mat-divider>
-  </ng-container>
-</mat-menu>
+<ng-container *ngIf="firstLevel else menuTmpl">
+
+  <button #firstLevelTrigger mat-button [matMenuTriggerFor]="childMenu"></button>
+  <mat-menu #childMenu="matMenu" [class]="class" [overlapTrigger]="false" [hasBackdrop]="false">
+    <ng-container *ngFor="let child of itemsArray">
+      <span *ngIf="isGroup(child) && child.isVisible">
+        <o-wrapper-content-menu-button [item]="child" [wrapper]="menu"></o-wrapper-content-menu-button>
+        <o-wrapper-content-menu #menu [items]="getChildren(child)" [class]="class"></o-wrapper-content-menu>
+      </span>
+      <o-wrapper-content-menu-button *ngIf="isItem(child) && child.isVisible" [item]="child"></o-wrapper-content-menu-button>
+      <mat-divider *ngIf="isSeparator(child) && child.isVisible"></mat-divider>
+    </ng-container>
+  </mat-menu>
+</ng-container>
+<ng-template #menuTmpl>
+  <mat-menu #childMenu="matMenu" [class]="class" [overlapTrigger]="false" [hasBackdrop]="false">
+    <ng-container *ngFor="let child of itemsArray">
+      <!-- Handle branch node menu items -->
+      <span *ngIf="isGroup(child) && child.isVisible">
+        <o-wrapper-content-menu-button [item]="child" [wrapper]="menu"></o-wrapper-content-menu-button>
+        <o-wrapper-content-menu #menu [items]="getChildren(child)" [class]="class"></o-wrapper-content-menu>
+      </span>
+      <!-- Handle leaf node menu items -->
+      <o-wrapper-content-menu-button *ngIf="isItem(child) && child.isVisible" [item]="child"></o-wrapper-content-menu-button>
+      <!-- separator leaf node menu items -->
+      <mat-divider *ngIf="isSeparator(child) && child.isVisible"></mat-divider>
+    </ng-container>
+  </mat-menu>
+</ng-template>

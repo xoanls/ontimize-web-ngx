@@ -6,6 +6,9 @@ import { OContextMenuGroupComponent } from './context-menu-group/o-context-menu-
 import { OContextMenuItemComponent } from './context-menu-item/o-context-menu-item.component';
 import { OContextMenuSeparatorComponent } from './context-menu-separator/o-context-menu-separator.component';
 import { OContextMenuContentComponent } from './context-menu/o-context-menu-content.component';
+import {
+  OWrapperContentMenuButtonComponent
+} from './context-menu/o-wrapper-content-menu-button/o-wrapper-content-menu-button.component';
 import { OWrapperContentMenuComponent } from './context-menu/o-wrapper-content-menu/o-wrapper-content-menu.component';
 import { OContextMenuComponent } from './o-context-menu.component';
 import { OContextMenuDirective } from './o-context-menu.directive';
@@ -13,7 +16,14 @@ import { OContextMenuDirective } from './o-context-menu.directive';
 @NgModule({
   imports: [CommonModule, OSharedModule],
   entryComponents: [OContextMenuContentComponent, OContextMenuComponent],
-  exports: [CommonModule, OContextMenuDirective, OContextMenuComponent, OContextMenuItemComponent, OContextMenuGroupComponent, OContextMenuSeparatorComponent],
+  exports: [
+    CommonModule,
+    OContextMenuDirective,
+    OContextMenuComponent,
+    OContextMenuItemComponent,
+    OContextMenuGroupComponent,
+    OContextMenuSeparatorComponent
+  ],
   declarations: [
     OContextMenuDirective,
     OContextMenuContentComponent,
@@ -21,6 +31,7 @@ import { OContextMenuDirective } from './o-context-menu.directive';
     OContextMenuItemComponent,
     OContextMenuGroupComponent,
     OWrapperContentMenuComponent,
+    OWrapperContentMenuButtonComponent,
     OContextMenuSeparatorComponent]
 })
 export class OContextMenuModule { }

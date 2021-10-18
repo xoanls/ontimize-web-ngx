@@ -12,7 +12,6 @@ export class OContextMenuService implements OnDestroy {
 
   public showContextMenu: Subject<IOContextMenuClickEvent> = new Subject<IOContextMenuClickEvent>();
   public closeContextMenu: Subject<Event> = new Subject();
-  protected fakeElement: ElementRef = new ElementRef({ nativeElement: '' });
   protected subscription: Subscription = new Subscription();
 
   constructor(
@@ -39,23 +38,23 @@ export class OContextMenuService implements OnDestroy {
   // Create overlay and attach `o-context-menu-content` to it in order to trigger the menu click, the menu opens in a new overlay
   // TODO: try to use only one overlay
   protected createOverlay(context: IOContextMenuContext): void {
-    context.event.preventDefault();
-    context.event.stopPropagation();
+    // const rect = (context.event.target as HTMLElement).getBoundingClientRect();
 
-    this.fakeElement.nativeElement.getBoundingClientRect = (): DOMRect => ({
-      bottom: context.event.clientY,
-      height: 0,
-      left: context.event.clientX,
-      right: context.event.clientX,
-      top: context.event.clientY,
-      width: 0,
-      x: 0,
-      y: 0,
-      toJSON: () => { }
-    });
+
+    // this.fakeElement.nativeElement.getBoundingClientRect = (): DOMRect => ({
+    //   bottom: context.anchorElement.clientY,
+    //   height: 0,
+    //   left: context.event.clientX,
+    //   right: context.event.clientX,
+    //   top: context.event.clientY,
+    //   width: 0,
+    // });
+    // { x: rect.left, y: rect.top }
+    const p = { x: context.event.clientX, y: context.event.clientY }
+
 
     const positionStrategy = this.overlay.position()
-      .flexibleConnectedTo(context.anchorElement || this.fakeElement)
+      .flexibleConnectedTo(p)
       .withPositions([{
         overlayX: 'start',
         overlayY: 'top',
@@ -74,22 +73,22 @@ export class OContextMenuService implements OnDestroy {
 
     this.attachContextMenu(overlayRef, context);
 
-    setTimeout(() => {
-      // Workaround to delete first level menu trigger
-      overlayRef.hostElement.classList.add('overlay-ref-display-none');
-      const nextSibling = overlayRef.hostElement.nextElementSibling;
-      if (nextSibling) {
-        const top = nextSibling.getBoundingClientRect().top;
-        this.renderer.setStyle(nextSibling, 'top', `${top - 32}px`);
-      }
+    // setTimeout(() => {
+    //   // Workaround to delete first level menu trigger
+    //   overlayRef.hostElement.classList.add('overlay-ref-display-none');
+    //   const nextSibling = overlayRef.hostElement.nextElementSibling;
+    //   if (nextSibling) {
+    //     const top = nextSibling.getBoundingClientRect().top;
+    //     this.renderer.setStyle(nextSibling, 'top', `${top - 32}px`);
+    //   }
 
-      this.cd.detectChanges();
-    })
+    this.cd.detectChanges();
+    // })
   }
 
   protected attachContextMenu(overlay: OverlayRef, context: IOContextMenuContext): void {
     const contextMenuContent: ComponentRef<OContextMenuContentComponent> = overlay.attach(new ComponentPortal(OContextMenuContentComponent));
-    contextMenuContent.instance.overlay = overlay;
+    // contextMenuContent.instance.overlay = overlay;
     contextMenuContent.instance.menuItems = context.menuItems;
     contextMenuContent.instance.externalMenuItems = context.externalMenuItems;
     contextMenuContent.instance.data = context.data;

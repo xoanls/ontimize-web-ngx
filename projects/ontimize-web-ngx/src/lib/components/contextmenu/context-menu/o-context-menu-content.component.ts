@@ -1,10 +1,11 @@
 import { OverlayRef } from '@angular/cdk/overlay';
-import { AfterViewInit, Component, EventEmitter, HostListener, Injector, OnInit, QueryList, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, HostListener, Injector, OnInit, QueryList, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material';
 
 import { OContextMenuGroupComponent } from '../context-menu-group/o-context-menu-group.component';
 import { OContextMenuItemComponent } from '../context-menu-item/o-context-menu-item.component';
 import { OComponentMenuBaseItem } from '../o-content-menu-base-item.class';
+import { OWrapperContentMenuComponent } from './o-wrapper-content-menu/o-wrapper-content-menu.component';
 
 export const DEFAULT_CONTEXT_MENU_CONTENT_INPUTS = [
   'menuItems',
@@ -32,17 +33,18 @@ export class OContextMenuContentComponent implements AfterViewInit, OnInit {
 
   public menuItems: QueryList<OComponentMenuBaseItem>;
   public externalMenuItems: QueryList<OComponentMenuBaseItem>;
-  public overlay: OverlayRef;
+  // public overlay: OverlayRef;
   public data: any;
   public menuClass: string;
   public execute: EventEmitter<{ event: Event, data: any, menuItem: OContextMenuItemComponent }> = new EventEmitter();
   public close: EventEmitter<any> = new EventEmitter();
-  @ViewChild(MatMenuTrigger, { static: false })
-  public trigger: MatMenuTrigger;
+  // @ViewChild(MatMenuTrigger, { static: false })
+  // public trigger: MatMenuTrigger;
   public allMenuItems: OComponentMenuBaseItem[];
 
   constructor(
-    protected injector: Injector
+    protected injector: Injector,
+    private cd: ChangeDetectorRef
   ) { }
 
   @HostListener('document:click')
@@ -55,9 +57,9 @@ export class OContextMenuContentComponent implements AfterViewInit, OnInit {
   }
 
   public ngAfterViewInit(): void {
-    this.trigger.openMenu();
+    // this.trigger.openMenu();
+    this.cd.detectChanges();
   }
-
 
   public initialize(): void {
     const menuItemsArray = this.menuItems ? this.menuItems.toArray() : [];
@@ -82,7 +84,7 @@ export class OContextMenuContentComponent implements AfterViewInit, OnInit {
   }
 
   public closeContent(): void {
-    this.trigger.closeMenu();
+    // this.trigger.closeMenu();
     this.close.emit();
   }
 

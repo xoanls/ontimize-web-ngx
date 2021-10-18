@@ -1,10 +1,9 @@
-import { ElementRef, QueryList } from '@angular/core';
+import { QueryList } from '@angular/core';
 
 import { OComponentMenuBaseItem } from '../components/contextmenu/o-content-menu-base-item.class';
 import { OContextMenuComponent } from '../components/contextmenu/o-context-menu.component';
 
 export interface IOContextMenuClickEvent {
-  anchorElement?: ElementRef;
   contextMenu?: OContextMenuComponent;
   event?: MouseEvent;
   data?: any;

@@ -1,0 +1,17 @@
+
+
+<ng-container *ngIf="childMenu; else defaultItem">
+  <button mat-menu-item #trigger [matMenuTriggerFor]="childMenu" [disabled]="item.disabled">
+    <mat-icon *ngIf="item.svgIcon != null" [svgIcon]="item.svgIcon"></mat-icon>
+    <mat-icon *ngIf="item.svgIcon == null && item.icon != null">{{ item.icon }}</mat-icon>
+    <span>{{ item.label | oTranslate}} </span>
+  </button>
+</ng-container>
+
+<ng-template #defaultItem>
+  <button mat-menu-item (click)="onClick($event)" [disabled]="item.disabled">
+    <mat-icon *ngIf="item.svgIcon != null" [svgIcon]="item.svgIcon"></mat-icon>
+    <mat-icon *ngIf="item.svgIcon == null && item.icon != null">{{ item.icon }}</mat-icon>
+    <span>{{ item.label | oTranslate}} </span>
+  </button>
+</ng-template>
